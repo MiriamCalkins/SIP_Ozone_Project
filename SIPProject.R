@@ -1,16 +1,30 @@
 ###ENVH 548 SIP Group Project Spring 2015###
 
-install.packages(c("maptools", "sp", "raster", "rgdal", "rgeos", "spdep", "spatstat", 
-                   "reshape2", "scales", "shapefiles", "maps"))
+#Install packages when necessary
+for (pkg in c("Hmisc", "maptools", "sp", "raster", "rgeos", "spdep", "spatstat", 
+              "reshape2", "scales", "shapefiles", "maps", "ggplot")){
+  if(! require(pkg, character.only=T)){
+    install.packages(pkg, repos="http//cran.fhcrc.org", dependencies=TRUE)
+    suppressPackageStartupMessages(library(pkg)) #does this pull up all the packages? Some packages may not work together/at the same time
+  }
+}
 #trouble shooting rgdal install
-install.packages('rgdal',repos="http://www.stats.ox.ac.uk/pub/RWin")
+for (pkg in c("rgdal")){
+  if(! require(pkg, character.only=T)){
+    install.packages(pkg, repos="http://www.stats.ox.ac.uk/pub/RWin", dependencies=TRUE)
+    suppressPackageStartupMessages(library(pkg)) #does this pull up all the packages? Some packages may not work together/at the same time
+  }
+}
 
 #EPA ozone data
 #source: http://www.epa.gov/airdata/ad_data_daily.html
 
-ozone12<-read.csv("/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/Data/WAozone2012.csv")
-ozone13<-read.csv("/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/Data/WAozone2013.csv")
-ozone14<-read.csv("/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/Data/WAozone2014.csv")
+WD<-getwd()
+if(!is.null(WD)) setwd("/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/")
+
+ozone12<-read.csv("Data/WAozone2012.csv")
+ozone13<-read.csv("Data/WAozone2013.csv")
+ozone14<-read.csv("Data/WAozone2014.csv")
 
 library(Hmisc)
 describe(ozone12)
@@ -80,7 +94,9 @@ table(Nonatt$Daily.Max.8.hour.Ozone.Concentration, Nonatt$AQS_SITE_ID)
 table(Nonatt$Daily.Max.8.hour.Ozone.Concentration, Nonatt$month)
 table(Nonatt$COUNTY, Nonatt$month)
 
-hist(Nonatt$Daily.Max.8.hour.Ozone.Concentration)
+hist(Nonatt$Daily.Max.8.hour.Ozone.Concentration, main="", xlab="Ozone Concentration (ppm)", col="tomato")
+title(main=list("NAAQS Exceedence Frequency in Nonattainment Areas of
+     the Puget Sound and Spokane", cex=0.9))
 
 plot(Nonatt$COUNTY, Nonatt$Daily.Max.8.hour.Ozone.Concentration, col=rainbow(6), cex.axis=0.5,
      xlab="Counties", ylab="Ozone Concentration (ppm)", main="Ozone Nonattainment by County in WA
@@ -100,13 +116,16 @@ library(reshape2) # visualization and manipulation
 library(scales) # visualization and manipulation
 library(shapefiles)
 library(maps)
+library(ggplot)
 
 #Basemap
 WAshape<-readOGR(dsn="/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/Data/WA_State_Bndy", 
                  layer="WA_State_Bndy") #source: WA DNR
 summary(WAshape)
-plot(WAshape, col="goldenrod1")
-names(WAshape)
+plot(WAshape)
+proj4string(WAshape)
+str(attributes(WAshape))
+geometry(WAshape)
 
 Countyshape<-readOGR(dsn="/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/Data/WA_County_Bndys", 
                      layer="WA_County_Bndys") #source: WA DNR)
@@ -118,6 +137,30 @@ srshape<-readOGR(dsn="/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Sprin
                    layer="sr500k") #source: WA DOT
 summary(srshape)
 plot(srshape)
+
+NHDAreashape<-readOGR(dsn="/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/Data/WA_area_shape", 
+                      layer="NHDArea") #source: WA DOT
+summary(NHDAreashape)
+plot(NHDAreashape)
+
+coastshape<-readOGR(dsn="/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/Data/coast", 
+                 layer="CoastTrimmed") #source: USGS NHD
+summary(coastshape)
+plot(coastshape)
+
+shoreshape<-readOGR(dsn="/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/Data/shore", 
+                    layer="shore_poly") #source: WA DOE
+summary(shoreshape)
+plot(shoreshape)
+
+#Select Regions on base map by attribute
+attributes(WAshape@data)
+WAshape@data$id<-rownames(WAshape@data)
+
+
+spplot(WAshape)
+WApugetsound<-(WAshape@data$DNR_ADMIN_REGION_CODE==900)
+
 
 ####Create spatial data frame for Ozone
 #All AQS
@@ -133,10 +176,14 @@ NonattWA <- spTransform(Nonatt, CRS("+proj=lcc +lat_1=45.83333333333334 +lat_2=4
                                     +x_0=500000.0000000001 +y_0=0 +ellps=GRS80 +units=us-ft +no_defs"))
 
 #Overlay data on WA state
-plot(Countyshape, col="papayawhip", main="Puget Sound and Spkane Air Quality Monitoring Sites 
-     in Exceedance of 8-hr Ozone NAAQS")
+plot(WAshape)
+plot(Countyshape, att=TRUE, col="papayawhip")
 plot(srshape, add=TRUE, col="gray81")
+plot(coastshape, add=TRUE, col="blue")
 plot(ozoneSIPWA, add=TRUE, pch=23, col="thistle4", bg="thistle3", cex=0.8)
 plot(NonattWA, add=TRUE, pch=23, col="slateblue4", bg="slateblue4", cex=0.8)
-legend("bottomright", c("state routes", "AQS below NAAQS", "AQS above NAAQS"), 
-       fill=c("gray", "thistle", "slateblue"), cex=0.5)
+title(main=list("Puget Sound and Spokane Air Quality Monitoring
+     Sites in Exceedance of 8-hr Ozone NAAQS", cex=0.9))
+legend("top", c("AQS below NAAQS", "AQS above NAAQS", "State Routes"), 
+       fill=c("thistle", "slateblue", "gray"), horiz=T, cex=0.5)
+
