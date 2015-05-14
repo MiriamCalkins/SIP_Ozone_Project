@@ -1,5 +1,5 @@
 ###ENVH 548 SIP Group Project Spring 2015###
-...testing
+
 #Install packages when necessary
 for (pkg in c("Hmisc", "maptools", "sp", "raster", "rgeos", "spdep", "spatstat", 
               "reshape2", "scales", "shapefiles", "maps", "ggplot")){
