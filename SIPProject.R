@@ -23,6 +23,10 @@ for (pkg in c("rgdal")) {
 WD<-getwd()
 if(!is.null(WD)) setwd("/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/")
 
+# Create the data folder if needed.
+datadir <- "Data"
+dir.create(file.path(datadir), showWarnings=FALSE, recursive=TRUE)
+
 ozone12<-read.csv("Data/WAozone2012.csv")
 ozone13<-read.csv("Data/WAozone2013.csv")
 ozone14<-read.csv("Data/WAozone2014.csv")
