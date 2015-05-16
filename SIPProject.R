@@ -5,7 +5,9 @@ for (pkg in c("Hmisc", "maptools", "sp", "raster", "rgeos", "spdep", "spatstat",
               "reshape2", "scales", "shapefiles", "maps", "ggplot2")){
   if (! require(pkg, character.only=TRUE)){
     install.packages(pkg, dependencies=TRUE)
-    require(pkg, character.only=TRUE)
+    if (! require(pkg, character.only=TRUE) ) {
+      stop(paste0(c("Can't load package: ", pkg, "!"), collapse = ""))
+    }
   }
 }
 
@@ -13,7 +15,9 @@ for (pkg in c("Hmisc", "maptools", "sp", "raster", "rgeos", "spdep", "spatstat",
 for (pkg in c("rgdal")) {
   if (! require(pkg, character.only=TRUE)) {
     install.packages(pkg, dependencies=TRUE)
-    require(pkg, character.only=TRUE)
+    if (! require(pkg, character.only=TRUE) ) {
+      stop(paste0(c("Can't load package: ", pkg, "!"), collapse = ""))
+    }
   }
 }
 
