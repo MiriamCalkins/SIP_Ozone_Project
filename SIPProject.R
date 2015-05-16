@@ -1,18 +1,23 @@
 ###ENVH 548 SIP Group Project Spring 2015###
 
-#Install packages when necessary
+# Load each package. Install packages when necessary.
 for (pkg in c("Hmisc", "maptools", "sp", "raster", "rgeos", "spdep", "spatstat", 
-              "reshape2", "scales", "shapefiles", "maps", "ggplot")){
-  if(! require(pkg, character.only=T)){
-    install.packages(pkg, repos="http//cran.fhcrc.org", dependencies=TRUE)
-    suppressPackageStartupMessages(library(pkg)) #does this pull up all the packages? Some packages may not work together/at the same time
+              "reshape2", "scales", "shapefiles", "maps", "ggplot2")){
+  if (! require(pkg, character.only=TRUE)){
+    install.packages(pkg, dependencies=TRUE)
+    if (! require(pkg, character.only=TRUE) ) {
+      stop(paste0(c("Can't load package: ", pkg, "!"), collapse = ""))
+    }
   }
 }
-#trouble shooting rgdal install
-for (pkg in c("rgdal")){
-  if(! require(pkg, character.only=T)){
-    install.packages(pkg, repos="http://www.stats.ox.ac.uk/pub/RWin", dependencies=TRUE)
-    suppressPackageStartupMessages(library(pkg)) #does this pull up all the packages? Some packages may not work together/at the same time
+
+# Load each package. Install packages when necessary.
+for (pkg in c("rgdal")) {
+  if (! require(pkg, character.only=TRUE)) {
+    install.packages(pkg, dependencies=TRUE)
+    if (! require(pkg, character.only=TRUE) ) {
+      stop(paste0(c("Can't load package: ", pkg, "!"), collapse = ""))
+    }
   }
 }
 
@@ -21,6 +26,10 @@ for (pkg in c("rgdal")){
 
 WD<-getwd()
 if(!is.null(WD)) setwd("/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/")
+
+# Create the data folder if needed.
+datadir <- "Data"
+dir.create(file.path(datadir), showWarnings=FALSE, recursive=TRUE)
 
 ozone12<-read.csv("Data/WAozone2012.csv")
 ozone13<-read.csv("Data/WAozone2013.csv")
