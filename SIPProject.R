@@ -49,8 +49,10 @@ keepvars<-c("Date", "AQS_SITE_ID", "Daily.Max.8.hour.Ozone.Concentration", "UNIT
 ozoneSIP<-ozoneall[keepvars]
 str(ozoneSIP)
 
-#Remove Clark County (as an unused COUNTY level)
+#Remove Clark, Whatcom, and Clallam Counties (as an unused COUNTY level)
 ozoneSIP$COUNTY[ozoneSIP$COUNTY=="Clark"]<-NA
+ozoneSIP$COUNTY[ozoneSIP$COUNTY=="Whatcom"]<-NA
+ozoneSIP$COUNTY[ozoneSIP$COUNTY=="Clallam"]<-NA
 ozoneSIP$COUNTY<-factor(ozoneSIP$COUNTY)
 str(ozoneSIP)
 ozoneSIP<-na.omit(ozoneSIP)
@@ -58,7 +60,7 @@ str(ozoneSIP)
 
 #Select entries at or above project 8-hr NAAQS of 0.065 ppm
 Nonatt<-subset(ozoneSIP, Daily.Max.8.hour.Ozone.Concentration>=0.065)
-describe(Nonattall)
+describe(Nonatt)
 
 #Formatting date
 Nonatt$date <- as.Date(Nonatt$Date, "%m/%d/%Y")
@@ -71,12 +73,10 @@ Nonatt$year
 is.King<-(ozoneall$COUNTY=="King")
 is.King
 
-is.Clallam<-ozoneall$COUNTY=="Clallam"
 is.Pierce<-(ozoneall$COUNTY=="Pierce")
 is.Skagit<-(ozoneall$COUNTY=="Skagit")
 is.Spokane<-(ozoneall$COUNTY=="Spokane")
 is.Thurston<-(ozoneall$COUNTY=="Thurston")
-is.Whatcom<-(ozoneall$COUNTY=="Whatcom")
 
 #####################
 ##Descriptive stats##
@@ -85,13 +85,12 @@ is.Whatcom<-(ozoneall$COUNTY=="Whatcom")
 summary(Nonatt)
 
 #Total number of AQI Sites per county
-length(unique(ozoneall$AQS_SITE_ID[is.Clallam]))
 length(unique(ozoneall$AQS_SITE_ID[is.King]))
 length(unique(ozoneall$AQS_SITE_ID[is.Pierce]))
 length(unique(ozoneall$AQS_SITE_ID[is.Skagit]))
 length(unique(ozoneall$AQS_SITE_ID[is.Spokane]))
 length(unique(ozoneall$AQS_SITE_ID[is.Thurston]))
-length(unique(ozoneall$AQS_SITE_ID[is.Whatcom]))
+
 
 #Total number of AQS sites in exceedance per county with AQS_SITE_ID
 table(Nonatt$AQS_SITE_ID, Nonatt$COUNTY) #Why is Clark County still appearing?
@@ -107,7 +106,7 @@ hist(Nonatt$Daily.Max.8.hour.Ozone.Concentration, main="", xlab="Ozone Concentra
 title(main=list("NAAQS Exceedence Frequency in Nonattainment Areas of
      the Puget Sound and Spokane", cex=0.9))
 
-plot(Nonatt$COUNTY, Nonatt$Daily.Max.8.hour.Ozone.Concentration, col=rainbow(6), cex.axis=0.5,
+plot(Nonatt$COUNTY, Nonatt$Daily.Max.8.hour.Ozone.Concentration, col=rainbow(7), cex.axis=0.5,
      xlab="Counties", ylab="Ozone Concentration (ppm)", main="Ozone Nonattainment by County in WA
      2012-2014")
 
@@ -161,15 +160,6 @@ shoreshape<-readOGR(dsn="/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Sp
                     layer="shore_poly") #source: WA DOE
 summary(shoreshape)
 plot(shoreshape)
-
-#Select Regions on base map by attribute
-attributes(WAshape@data)
-WAshape@data$id<-rownames(WAshape@data)
-
-
-spplot(WAshape)
-WApugetsound<-(WAshape@data$DNR_ADMIN_REGION_CODE==900)
-
 
 ####Create spatial data frame for Ozone
 #All AQS
