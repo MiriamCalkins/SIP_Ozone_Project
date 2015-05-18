@@ -69,6 +69,11 @@ Nonatt$month
 Nonatt$year <- format(Nonatt$date, "%Y")
 Nonatt$year
 
+ozoneall$date <- as.Date(ozoneall$Date, "%m/%d/%Y")
+ozoneall$month <- format(ozoneall$date, "%b")
+ozoneall$month
+ozoneall$year <- format(ozoneall$date, "%Y")
+ozoneall$year
 #Selecting Specific Counties
 is.King<-(ozoneall$COUNTY=="King")
 is.King
@@ -93,11 +98,15 @@ length(unique(ozoneall$AQS_SITE_ID[is.Thurston]))
 
 
 #Total number of AQS sites in exceedance per county with AQS_SITE_ID
-table(Nonatt$AQS_SITE_ID, Nonatt$COUNTY) #Why is Clark County still appearing?
+table(Nonatt$AQS_SITE_ID, Nonatt$COUNTY)
 
 #Concentration by county, AQS, and month
 table(Nonatt$Daily.Max.8.hour.Ozone.Concentration, Nonatt$COUNTY)
 table(Nonatt$Daily.Max.8.hour.Ozone.Concentration, Nonatt$AQS_SITE_ID)
+table(Nonatt$AQS_SITE_ID, Nonatt$month)
+
+table(ozoneall$month, ozoneall$COUNTY)
+table(ozoneall$month[ozoneall$COUNTY=="Skagit"], ozoneall$AQS_SITE_ID[ozoneall$COUNTY=="Skagit"])
 
 table(Nonatt$Daily.Max.8.hour.Ozone.Concentration, Nonatt$month)
 table(Nonatt$COUNTY, Nonatt$month)
@@ -146,20 +155,13 @@ srshape<-readOGR(dsn="/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Sprin
 summary(srshape)
 plot(srshape)
 
-NHDAreashape<-readOGR(dsn="/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/Data/WA_area_shape", 
-                      layer="NHDArea") #source: WA DOT
-summary(NHDAreashape)
-plot(NHDAreashape)
-
 coastshape<-readOGR(dsn="/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/Data/coast", 
-                 layer="CoastTrimmed") #source: USGS NHD
+                 layer="CoastTrimmed") #source: WA DOT
 summary(coastshape)
-plot(coastshape)
-
-shoreshape<-readOGR(dsn="/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/Data/shore", 
-                    layer="shore_poly") #source: WA DOE
-summary(shoreshape)
-plot(shoreshape)
+plot(coastshape, col="lightblue")
+proj4string(coastshape)
+coastshapenew<-coastshape <- spTransform(coastshape, CRS("+proj=lcc +lat_1=45.83333333333334 +lat_2=47.33333333333334 +lat_0=45.33333333333334 +lon_0=-120.5
+                                    +x_0=500000.0000000001 +y_0=0 +ellps=GRS80 +units=us-ft +no_defs"))
 
 ####Create spatial data frame for Ozone
 #All AQS
@@ -176,13 +178,25 @@ NonattWA <- spTransform(Nonatt, CRS("+proj=lcc +lat_1=45.83333333333334 +lat_2=4
 
 #Overlay data on WA state
 plot(WAshape)
-plot(Countyshape, att=TRUE, col="papayawhip")
-plot(srshape, add=TRUE, col="gray81")
-plot(coastshape, add=TRUE, col="blue")
-plot(ozoneSIPWA, add=TRUE, pch=23, col="thistle4", bg="thistle3", cex=0.8)
-plot(NonattWA, add=TRUE, pch=23, col="slateblue4", bg="slateblue4", cex=0.8)
+plot(Countyshape, add=TRUE, col="papayawhip")
+plot(coastshapenew, add=T, col="lightblue")
+plot(srshape, add=TRUE, col="gray74", cex=1.2)
+plot(ozoneSIPWA, add=TRUE, pch=23, col="thistle4", bg="thistle3", cex=1.75)
+plot(NonattWA, add=TRUE, pch=23, col="slateblue4", bg="slateblue4", cex=1.75)
 title(main=list("Puget Sound and Spokane Air Quality Monitoring
-     Sites in Exceedance of 8-hr Ozone NAAQS", cex=0.9))
+     Sites in Exceedance of 8-hr Ozone NAAQS", cex=1.2))
 legend("top", c("AQS below NAAQS", "AQS above NAAQS", "State Routes"), 
        fill=c("thistle", "slateblue", "gray"), horiz=T, cex=0.5)
+
+#No roads
+plot(WAshape)
+plot(Countyshape, add=TRUE, col="papayawhip")
+plot(coastshapenew, add=T, col="lightblue")
+plot(ozoneSIPWA, add=TRUE, pch=23, col="thistle4", bg="thistle3", cex=1.75)
+plot(NonattWA, add=TRUE, pch=23, col="slateblue4", bg="slateblue4", cex=1.75)
+title(main=list("Puget Sound and Spokane Air Quality Monitoring
+     Sites in Exceedance of 8-hr Ozone NAAQS", cex=1.2))
+legend("top", c("AQS below NAAQS", "AQS above NAAQS"), 
+       fill=c("thistle", "slateblue"), horiz=T, cex=0.5)
+
 
