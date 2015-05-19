@@ -53,10 +53,86 @@ str(ozoneSIP)
 ozoneSIP$COUNTY[ozoneSIP$COUNTY=="Clark"]<-NA
 ozoneSIP$COUNTY[ozoneSIP$COUNTY=="Whatcom"]<-NA
 ozoneSIP$COUNTY[ozoneSIP$COUNTY=="Clallam"]<-NA
+ozoneSIP$COUNTY[ozoneSIP$COUNTY=="Thurston"]<-NA
+ozoneSIP$COUNTY[ozoneSIP$COUNTY=="Skagit"]<-NA
 ozoneSIP$COUNTY<-factor(ozoneSIP$COUNTY)
 str(ozoneSIP)
 ozoneSIP<-na.omit(ozoneSIP)
 str(ozoneSIP)
+
+##Sort data for every 4th highest value by year and AQS (NEED TO WRITE LOOPING FUNCTION FOR THIS)
+#Enumclaw
+n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0023"])
+sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0023"], partial=n-3)[n-3]
+n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0023"])
+sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0023"], partial=n-3)[n-3]
+n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0023"])
+sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0023"], partial=n-3)[n-3]
+
+#North Bend
+n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0017"])
+sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0017"], partial=n-3)[n-3]
+n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0017"])
+sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0017"], partial=n-3)[n-3]
+n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0017"])
+sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0017"], partial=n-3)[n-3]
+
+#Issaquah
+n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0010"])
+sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0010"], partial=n-3)[n-3]
+n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0010"])
+sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0010"], partial=n-3)[n-3]
+n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0010"])
+sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0010"], partial=n-3)[n-3]
+
+#Beacon Hill
+n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0080"])
+sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0080"], partial=n-3)[n-3]
+n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0080"])
+sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0080"], partial=n-3)[n-3]
+n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0080"])
+sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0080"], partial=n-3)[n-3]
+
+#Mt Rainier
+n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-053-0012"])
+sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-053-0012"], partial=n-3)[n-3]
+n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-053-0012"])
+sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-053-0012"], partial=n-3)[n-3]
+n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-053-0012"])
+sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-053-0012"], partial=n-3)[n-3]
+
+#Yelm
+n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-067-0005"])
+sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-067-0005"], partial=n-3)[n-3]
+n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-067-0005"])
+sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-067-0005"], partial=n-3)[n-3]
+n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-067-0005"])
+sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-067-0005"], partial=n-3)[n-3]
+
+#Turnbull
+n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-063-0001"])
+sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-063-0001"], partial=n-3)[n-3]
+n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-063-0001"])
+sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-063-0001"], partial=n-3)[n-3]
+n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-063-0001"])
+sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-063-0001"], partial=n-3)[n-3]
+
+#August $ Fiske
+n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-063-0021"])
+sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-063-0021"], partial=n-3)[n-3]
+n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-063-0021"])
+sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-063-0021"], partial=n-3)[n-3]
+n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-063-0021"])
+sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-063-0021"], partial=n-3)[n-3]
+
+#Greenbluff
+n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-063-0046"])
+sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-063-0046"], partial=n-3)[n-3]
+n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-063-0046"])
+sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-063-0046"], partial=n-3)[n-3]
+n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-063-0046"])
+sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-063-0046"], partial=n-3)[n-3]
+
 
 #Select entries at or above project 8-hr NAAQS of 0.065 ppm
 Nonatt<-subset(ozoneSIP, Daily.Max.8.hour.Ozone.Concentration>=0.065)
@@ -95,7 +171,6 @@ length(unique(ozoneall$AQS_SITE_ID[is.Pierce]))
 length(unique(ozoneall$AQS_SITE_ID[is.Skagit]))
 length(unique(ozoneall$AQS_SITE_ID[is.Spokane]))
 length(unique(ozoneall$AQS_SITE_ID[is.Thurston]))
-
 
 #Total number of AQS sites in exceedance per county with AQS_SITE_ID
 table(Nonatt$AQS_SITE_ID, Nonatt$COUNTY)
