@@ -101,6 +101,22 @@ sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-053-0
 n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-053-0012"])
 sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-053-0012"], partial=n-3)[n-3]
 
+#Skagit?
+n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-057-0011"])
+sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="553-057-0011"], partial=n-3)[n-3]
+n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-057-0011"])
+sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-057-0011"], partial=n-3)[n-3]
+n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-057-0011"])
+sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-057-0011"], partial=n-3)[n-3]
+
+#Skagit?
+n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-057-0020"])
+sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="553-057-0020"], partial=n-3)[n-3]
+n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-057-0020"])
+sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-057-0020"], partial=n-3)[n-3]
+n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-057-0020"])
+sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-057-0020"], partial=n-3)[n-3]
+
 #Yelm
 n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-067-0005"])
 sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-067-0005"], partial=n-3)[n-3]
@@ -134,8 +150,8 @@ n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-
 sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-063-0046"], partial=n-3)[n-3]
 
 
-#Select entries at or above project 8-hr NAAQS of 0.065 ppm
-Nonatt<-subset(ozoneSIP, Daily.Max.8.hour.Ozone.Concentration>=0.065)
+#Select entries at or above project 8-hr NAAQS of 0.061 ppm
+Nonatt<-subset(ozoneSIP, Daily.Max.8.hour.Ozone.Concentration>=0.061)
 describe(Nonatt)
 
 #Formatting date
@@ -179,7 +195,6 @@ table(Nonatt$AQS_SITE_ID, Nonatt$COUNTY)
 table(Nonatt$Daily.Max.8.hour.Ozone.Concentration, Nonatt$COUNTY)
 table(Nonatt$Daily.Max.8.hour.Ozone.Concentration, Nonatt$AQS_SITE_ID)
 table(Nonatt$AQS_SITE_ID, Nonatt$month)
-
 table(ozoneall$month, ozoneall$COUNTY)
 table(ozoneall$month[ozoneall$COUNTY=="Skagit"], ozoneall$AQS_SITE_ID[ozoneall$COUNTY=="Skagit"])
 
@@ -190,7 +205,7 @@ hist(Nonatt$Daily.Max.8.hour.Ozone.Concentration, main="", xlab="Ozone Concentra
 title(main=list("NAAQS Exceedence Frequency in Nonattainment Areas of
      the Puget Sound and Spokane", cex=0.9))
 
-plot(Nonatt$COUNTY, Nonatt$Daily.Max.8.hour.Ozone.Concentration, col=rainbow(7), cex.axis=0.5,
+plot(Nonatt$COUNTY, Nonatt$Daily.Max.8.hour.Ozone.Concentration, col=rainbow(12), cex.axis=0.5,
      xlab="Counties", ylab="Ozone Concentration (ppm)", main="Ozone Nonattainment by County in WA
      2012-2014")
 
@@ -245,11 +260,20 @@ proj4string(ozoneSIP) <- CRS("+init=epsg:4269 +proj=longlat +ellps=GRS80 +datum=
 ozoneSIPWA <- spTransform(ozoneSIP, CRS("+proj=lcc +lat_1=45.83333333333334 +lat_2=47.33333333333334 +lat_0=45.33333333333334 +lon_0=-120.5
                                     +x_0=500000.0000000001 +y_0=0 +ellps=GRS80 +units=us-ft +no_defs"))
 
-#Nonattainment areas
+#Exceedance values
 coordinates(Nonatt) = c("SITE_LONGITUDE", "SITE_LATITUDE")
 proj4string(Nonatt) <- CRS("+init=epsg:4269 +proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs +towgs84=0,0,0") #EPA's CRS
 NonattWA <- spTransform(Nonatt, CRS("+proj=lcc +lat_1=45.83333333333334 +lat_2=47.33333333333334 +lat_0=45.33333333333334 +lon_0=-120.5
                                     +x_0=500000.0000000001 +y_0=0 +ellps=GRS80 +units=us-ft +no_defs"))
+
+#Nonattainment areas
+Nonattsites<-subset(Nonatt, AQS_SITE_ID=="53-033-0023"|AQS_SITE_ID=="53-063-0001"|AQS_SITE_ID=="53-063-0021"|
+                      AQS_SITE_ID=="53-063-0046")
+coordinates(Nonattsites) = c("SITE_LONGITUDE", "SITE_LATITUDE")
+proj4string(Nonattsites) <- CRS("+init=epsg:4269 +proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs +towgs84=0,0,0") #EPA's CRS
+NonattsitesWA <- spTransform(Nonattsites, CRS("+proj=lcc +lat_1=45.83333333333334 +lat_2=47.33333333333334 +lat_0=45.33333333333334 +lon_0=-120.5
+                                    +x_0=500000.0000000001 +y_0=0 +ellps=GRS80 +units=us-ft +no_defs"))
+
 
 #Overlay data on WA state
 plot(WAshape)
@@ -257,11 +281,12 @@ plot(Countyshape, add=TRUE, col="papayawhip")
 plot(coastshapenew, add=T, col="lightblue")
 plot(srshape, add=TRUE, col="gray74", cex=1.2)
 plot(ozoneSIPWA, add=TRUE, pch=23, col="thistle4", bg="thistle3", cex=1.75)
-plot(NonattWA, add=TRUE, pch=23, col="slateblue4", bg="slateblue4", cex=1.75)
+plot(NonattWA, add=TRUE, pch=23, col="slateblue1", bg="slateblue1", cex=1.75)
+plot(NonattsitesWA, add=TRUE, pch=23, col="slateblue4", bg="slateblue4", cex=1.75)
 title(main=list("Puget Sound and Spokane Air Quality Monitoring
-     Sites in Exceedance of 8-hr Ozone NAAQS", cex=1.2))
-legend("top", c("AQS below NAAQS", "AQS above NAAQS", "State Routes"), 
-       fill=c("thistle", "slateblue", "gray"), horiz=T, cex=0.5)
+     Sites with Any Exceedances of 8-hr Ozone NAAQS", cex=1.2))
+legend("top", c("AQS below NAAQS", "AQS above NAAQS", "Nonattainment AQS", "State Routes"), 
+       fill=c("thistle", "slateblue1", "slateblue4", "gray"), horiz=T, cex=0.5)
 
 #No roads
 plot(WAshape)
@@ -270,7 +295,7 @@ plot(coastshapenew, add=T, col="lightblue")
 plot(ozoneSIPWA, add=TRUE, pch=23, col="thistle4", bg="thistle3", cex=1.75)
 plot(NonattWA, add=TRUE, pch=23, col="slateblue4", bg="slateblue4", cex=1.75)
 title(main=list("Puget Sound and Spokane Air Quality Monitoring
-     Sites in Exceedance of 8-hr Ozone NAAQS", cex=1.2))
+     Sites with Any Exceedances of 8-hr Ozone NAAQS", cex=1.2))
 legend("top", c("AQS below NAAQS", "AQS above NAAQS"), 
        fill=c("thistle", "slateblue"), horiz=T, cex=0.5)
 
