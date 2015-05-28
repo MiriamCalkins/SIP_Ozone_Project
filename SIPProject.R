@@ -1,5 +1,5 @@
 ###ENVH 548 SIP Group Project Spring 2015###
-
+#
 # Load each package. Install packages when necessary.
 for (pkg in c("Hmisc", "maptools", "sp", "raster", "rgeos", "spdep", "spatstat", 
               "reshape2", "scales", "shapefiles", "maps", "ggplot2")){
@@ -298,5 +298,4 @@ title(main=list("Puget Sound and Spokane Air Quality Monitoring
      Sites with Any Exceedances of 8-hr Ozone NAAQS", cex=1.2))
 legend("top", c("AQS below NAAQS", "AQS above NAAQS"), 
        fill=c("thistle", "slateblue"), horiz=T, cex=0.5)
-
 
