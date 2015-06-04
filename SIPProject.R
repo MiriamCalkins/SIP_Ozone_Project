@@ -212,18 +212,8 @@ plot(Nonatt$COUNTY, Nonatt$Daily.Max.8.hour.Ozone.Concentration, col=rainbow(12)
 ###########
 ##Mapping##
 ###########
-library(maptools) #contains overlay commands
 library(sp) # vector data
-library(raster) # raster data
 library(rgdal) #input/output, projections (read shapefiles)
-library(rgeos) # geometry ops (necessary for ggplot2)
-library(spdep) # spatial dependence
-library(spatstat) # generate random points drawn from specific data)
-library(reshape2) # visualization and manipulation
-library(scales) # visualization and manipulation
-library(shapefiles)
-library(maps)
-library(ggplot)
 
 #Basemap
 WAshape<-readOGR(dsn="/Users/miriamcalkins/Documents/UWDEOHS/PhD Degree/Q3_Spring 2015/ENVH548/Homework/SIPProject/Data/WA_State_Bndy", 
