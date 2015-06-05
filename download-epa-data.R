@@ -36,11 +36,10 @@ read_WAozone <- function(year) {
         download_WAozone(year)
     }
     
-    # Read CSV files is found
+    # Read CSV files if found
     if (file.exists(ozfile)) {
         read.csv(ozfile, header=T)
     } else {
-        
         # Abort if still missing
         stop(paste(c("Can't find ", ozfile, "!"), sep=''))
     }
