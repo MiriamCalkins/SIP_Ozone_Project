@@ -60,95 +60,35 @@ str(ozoneSIP)
 ozoneSIP<-na.omit(ozoneSIP)
 str(ozoneSIP)
 
-##Sort data for every 4th highest value by year and AQS (NEED TO WRITE LOOPING FUNCTION FOR THIS)
-#Enumclaw
-n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0023"])
-sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0023"], partial=n-3)[n-3]
-n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0023"])
-sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0023"], partial=n-3)[n-3]
-n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0023"])
-sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0023"], partial=n-3)[n-3]
+# Sort data for every 4th highest value by year and AQS...
 
-#North Bend
-n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0017"])
-sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0017"], partial=n-3)[n-3]
-n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0017"])
-sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0017"], partial=n-3)[n-3]
-n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0017"])
-sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0017"], partial=n-3)[n-3]
+# Create a function to find "nth" highest value for matching id string
+highest <- function (df, id, n) {
+    with(df, sort(Daily.Max.8.hour.Ozone.Concentration[AQS_SITE_ID==id], 
+                  decr=T)[n])
+}
 
-#Issaquah
-n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0010"])
-sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0010"], partial=n-3)[n-3]
-n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0010"])
-sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0010"], partial=n-3)[n-3]
-n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0010"])
-sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0010"], partial=n-3)[n-3]
+# Create a list of these data frames to loop through
+dflist <- list(ozone12, ozone13, ozone14)
 
-#Beacon Hill
-n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0080"])
-sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-033-0080"], partial=n-3)[n-3]
-n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0080"])
-sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-033-0080"], partial=n-3)[n-3]
-n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0080"])
-sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-033-0080"], partial=n-3)[n-3]
+# Create a dataframe of sites of interest
+ids <- c("53-033-0023",   "53-033-0017",    "53-033-0010",   "53-033-0080", 
+         "53-053-0012",   "53-057-0011",    "53-057-0020",   "53-067-0005", 
+         "53-063-0001",   "53-063-0021",    "53-063-0046")
+loc <- c("Enumclaw",      "North Bend",     "Issaquah",      "Beacon Hill", 
+         "Mt Rainier",    "Skagit?",        "Skagit?",       "Yelm", 
+         "Turnbull",      "August $ Fiske", "Greenbluff")
 
-#Mt Rainier
-n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-053-0012"])
-sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-053-0012"], partial=n-3)[n-3]
-n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-053-0012"])
-sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-053-0012"], partial=n-3)[n-3]
-n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-053-0012"])
-sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-053-0012"], partial=n-3)[n-3]
+sites <- data.frame(id=ids, loc=loc)
+sites
 
-#Skagit?
-n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-057-0011"])
-sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="553-057-0011"], partial=n-3)[n-3]
-n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-057-0011"])
-sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-057-0011"], partial=n-3)[n-3]
-n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-057-0011"])
-sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-057-0011"], partial=n-3)[n-3]
+# Loop through list of data frames with sapply and run sort function on each.
+# We use sapply() twice, but this could also be a nested pair of for-loops.
+res <- sapply(ids, function (y) {sapply(dflist, function(x) highest(x, y, 4))})
 
-#Skagit?
-n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-057-0020"])
-sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="553-057-0020"], partial=n-3)[n-3]
-n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-057-0020"])
-sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-057-0020"], partial=n-3)[n-3]
-n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-057-0020"])
-sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-057-0020"], partial=n-3)[n-3]
-
-#Yelm
-n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-067-0005"])
-sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-067-0005"], partial=n-3)[n-3]
-n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-067-0005"])
-sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-067-0005"], partial=n-3)[n-3]
-n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-067-0005"])
-sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-067-0005"], partial=n-3)[n-3]
-
-#Turnbull
-n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-063-0001"])
-sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-063-0001"], partial=n-3)[n-3]
-n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-063-0001"])
-sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-063-0001"], partial=n-3)[n-3]
-n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-063-0001"])
-sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-063-0001"], partial=n-3)[n-3]
-
-#August $ Fiske
-n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-063-0021"])
-sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-063-0021"], partial=n-3)[n-3]
-n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-063-0021"])
-sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-063-0021"], partial=n-3)[n-3]
-n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-063-0021"])
-sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-063-0021"], partial=n-3)[n-3]
-
-#Greenbluff
-n<-length(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-063-0046"])
-sort(ozone12$Daily.Max.8.hour.Ozone.Concentration[ozone12$AQS_SITE_ID=="53-063-0046"], partial=n-3)[n-3]
-n<-length(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-063-0046"])
-sort(ozone13$Daily.Max.8.hour.Ozone.Concentration[ozone13$AQS_SITE_ID=="53-063-0046"], partial=n-3)[n-3]
-n<-length(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-063-0046"])
-sort(ozone14$Daily.Max.8.hour.Ozone.Concentration[ozone14$AQS_SITE_ID=="53-063-0046"], partial=n-3)[n-3]
-
+# View the "4th highest" results
+rownames(res) <- c("ozone12", "ozone13", "ozone14")
+res
 
 #Select entries at or above project 8-hr NAAQS of 0.061 ppm
 Nonatt<-subset(ozoneSIP, Daily.Max.8.hour.Ozone.Concentration>=0.061)
@@ -157,18 +97,18 @@ describe(Nonatt)
 #Formatting date
 Nonatt$date <- as.Date(Nonatt$Date, "%m/%d/%Y")
 Nonatt$month <- format(Nonatt$date, "%b")
-Nonatt$month
+table(Nonatt$month)
 Nonatt$year <- format(Nonatt$date, "%Y")
-Nonatt$year
+table(Nonatt$year)
 
 ozoneall$date <- as.Date(ozoneall$Date, "%m/%d/%Y")
 ozoneall$month <- format(ozoneall$date, "%b")
-ozoneall$month
+table(ozoneall$month)
 ozoneall$year <- format(ozoneall$date, "%Y")
-ozoneall$year
+table(ozoneall$year)
 #Selecting Specific Counties
 is.King<-(ozoneall$COUNTY=="King")
-is.King
+table(is.King)
 
 is.Pierce<-(ozoneall$COUNTY=="Pierce")
 is.Skagit<-(ozoneall$COUNTY=="Skagit")
